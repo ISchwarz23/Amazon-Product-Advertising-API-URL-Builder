@@ -1,7 +1,9 @@
 package de.codecrafters.apaarb;
 
 /**
- * Created by Ingo on 08.10.2016.
+ * A listing that contains all item conditions available at Amazon.
+ *
+ * @author ISchwarz
  */
 public enum AmazonItemCondition {
 
@@ -17,23 +19,12 @@ public enum AmazonItemCondition {
         this.requestValue = requestValue;
     }
 
-    public String getRequestValue() {
+    /**
+     * Gives the value used in the URL request that represents this item condition.
+     *
+     * @return The value used in the URL request that represents this item condition.
+     */
+    String getRequestValue() {
         return requestValue;
     }
-
-    public static AmazonItemCondition parse(final String textContent) {
-        if (ALL.toString().equalsIgnoreCase(textContent)) {
-            return ALL;
-        } else if (NEW.toString().equalsIgnoreCase(textContent)) {
-            return NEW;
-        } else if (USED.toString().equalsIgnoreCase(textContent)) {
-            return USED;
-        } else if (REFURBISHED.toString().equalsIgnoreCase(textContent)) {
-            return REFURBISHED;
-        } else if (COLLECTIBLE.toString().equalsIgnoreCase(textContent)) {
-            return COLLECTIBLE;
-        }
-        return null;
-    }
-
 }

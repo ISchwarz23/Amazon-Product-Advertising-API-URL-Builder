@@ -12,13 +12,13 @@ public class AmazonRequestBuilderTest {
 
     private static final String AMAZON_SERVICE_URL = "mypreferedawsnode.amazon.com";
 
-    private AmazonAuthentication authentication;
+    private AmazonAuthenticationInformation authentication;
     private AmazonItemId itemId;
 
     @Before
     public void setUp() throws Exception {
         itemId = AmazonItemId.createAsin("MYT3ST4S1N");
-        authentication = AmazonAuthentication.create("MyAssociateTag", "MyAccessKey", "MySecretCKey");
+        authentication = AmazonAuthenticationInformation.create("MyAssociateTag", "MyAccessKey", "MySecretCKey");
     }
 
     @Test

@@ -85,7 +85,7 @@ public final class AmazonRequestBuilder {
             return this;
         }
 
-        public String buildUrlFor(final String amazonServiceUrl, final AmazonAuthentication authentication) {
+        public String buildUrlFor(final String amazonServiceUrl, final AmazonAuthenticationInformation authentication) {
             if (responseGroups.size() == 0) {
                 responseGroups.add(ItemInformation.ITEM_ATTRIBUES);
             }
@@ -99,7 +99,7 @@ public final class AmazonRequestBuilder {
             }
 
             final Map<String, String> requestPairs = new LinkedHashMap<>();
-            requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKeyId());
+            requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
             requestPairs.put("AssociateTag", authentication.getAssociateTag());
             requestPairs.put("Condition", itemCondition.getRequestValue());
             requestPairs.put("IdType", itemId.getType().getRequestValue());

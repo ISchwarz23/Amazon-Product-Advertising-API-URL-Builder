@@ -1,7 +1,7 @@
 package de.codecrafters.apaarb;
 
 /**
- * Value-based data class representing the ID of an Amazon item. It supports all ID-types available at Amazon.
+ * A value-based data class representing the ID of an Amazon item. It supports all ID-types available at Amazon.
  *
  * @author ISchwarz
  */

@@ -14,57 +14,27 @@ import java.util.*;
  *
  * @author ISchwarz
  */
-public final class AmazonRequestBuilder {
-
-    public enum ItemInformation {
-        IMAGES("Images"),
-        ITEM_ATTRIBUTES("ItemAttributes"),
-        OFFERS("Offers"),
-        ACCESSORIES("Accessories"),
-        ALTERNATIVE_VERSIONS("AlternativeVersions"),
-        BROWSE_NODES("BrowseNodes"),
-        EDITORIAL_REVIEW("EditorialReview"),
-        OFFER_FULL("OfferFull"),
-        OFFER_SUMMARY("OfferSummary"),
-        REVIEWS("Reviews"),
-        SALES_RANK("SalesRank"),
-        SIMILARITIES("Similarities"),
-        TRACKS("Tracks"),
-        VARIATION_IMAGES("VariationImages"),
-        VARIATION_MATRIX("VariationMatrix"),
-        VARIATION_SUMMARY("VariationSummary"),
-        VARIATIONS("Variations");
-
-        private final String requestValue;
-
-        ItemInformation(final String requestValue) {
-            this.requestValue = requestValue;
-        }
-
-        private String getRequestValue() {
-            return requestValue;
-        }
-    }
+public final class AdvertisingApiRequestBuilder {
 
     /**
-     * Creates an {@link AmazonItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
+     * Creates an {@link AdvertisingApiItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
      *
      * @param itemId     The ID of the item to get the information for.
      * @param itemIdType The ID type of the given ID.
-     * @return A new {@link AmazonItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
+     * @return A new {@link AdvertisingApiItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
      */
-    public static AmazonItemLookupRequestBuilder forItemLookup(final String itemId, final AmazonItemId.Type itemIdType) {
-        return forItemLookup(AmazonItemId.create(itemId, itemIdType));
+    public static AdvertisingApiItemLookupRequestBuilder forItemLookup(final String itemId, final ItemId.Type itemIdType) {
+        return forItemLookup(ItemId.create(itemId, itemIdType));
     }
 
     /**
-     * Creates an {@link AmazonItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
+     * Creates an {@link AdvertisingApiItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
      *
      * @param itemId The ID of the item to get the information for.
-     * @return A new {@link AmazonItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
+     * @return A new {@link AdvertisingApiItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
      */
-    public static AmazonItemLookupRequestBuilder forItemLookup(final AmazonItemId itemId) {
-        return new AmazonItemLookupRequestBuilder(itemId);
+    public static AdvertisingApiItemLookupRequestBuilder forItemLookup(final ItemId itemId) {
+        return new AdvertisingApiItemLookupRequestBuilder(itemId);
     }
 
     /**
@@ -72,7 +42,7 @@ public final class AmazonRequestBuilder {
      *
      * @author ISchwarz
      */
-    public static final class AmazonItemLookupRequestBuilder {
+    public static final class AdvertisingApiItemLookupRequestBuilder {
 
         private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         private static final String DATE_FORMATTER_TIME_ZONE = "GMT";
@@ -88,11 +58,11 @@ public final class AmazonRequestBuilder {
         private static final String UTF8_CHARSET = "UTF-8";
 
         private final List<ItemInformation> responseGroup = new ArrayList<>();
-        private final AmazonItemId itemId;
+        private final ItemId itemId;
 
-        private AmazonItemCondition itemCondition = AmazonItemCondition.ALL;
+        private ItemCondition itemCondition = ItemCondition.ALL;
 
-        private AmazonItemLookupRequestBuilder(final AmazonItemId itemId) {
+        private AdvertisingApiItemLookupRequestBuilder(final ItemId itemId) {
             this.itemId = itemId;
             DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(DATE_FORMATTER_TIME_ZONE));
         }
@@ -101,47 +71,47 @@ public final class AmazonRequestBuilder {
          * Adds the given {@link ItemInformation} to the response group.
          *
          * @param itemInformation The {@link ItemInformation} that shall be added to the response group.
-         * @return The current {@link AmazonItemLookupRequestBuilder}.
+         * @return The current {@link AdvertisingApiItemLookupRequestBuilder}.
          */
-        public AmazonItemLookupRequestBuilder withInfoAbout(final ItemInformation itemInformation) {
+        public AdvertisingApiItemLookupRequestBuilder withInfoAbout(final ItemInformation itemInformation) {
             responseGroup.add(itemInformation);
             return this;
         }
 
         /**
-         * Sets the {@link AmazonItemCondition} to filter the result of the returned items.
+         * Sets the {@link ItemCondition} to filter the result of the returned items.
          *
          * @param itemCondition The {@link ItemInformation} to filter the result of the returned items.
-         * @return The current {@link AmazonItemLookupRequestBuilder}.
+         * @return The current {@link AdvertisingApiItemLookupRequestBuilder}.
          */
-        public AmazonItemLookupRequestBuilder withCondition(final AmazonItemCondition itemCondition) {
+        public AdvertisingApiItemLookupRequestBuilder withCondition(final ItemCondition itemCondition) {
             this.itemCondition = itemCondition;
             return this;
         }
 
         /**
-         * Creates the signed request http-url for the given service using the given {@link AmazonAuthenticationInformation}.
+         * Creates the signed request http-url for the given service using the given {@link AwsAuthentication}.
          *
          * @param amazonServiceUrl The url of the Amazon service that shall be used.
-         * @param authentication   The {@link AmazonAuthenticationInformation} that shall be used.
+         * @param authentication   The {@link AwsAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createRequestUrl(final String amazonServiceUrl, final AmazonAuthenticationInformation authentication) {
+        public String createRequestUrl(final String amazonServiceUrl, final AwsAuthentication authentication) {
             return createRequestUrl(amazonServiceUrl, authentication, HTTP_PROTOCOL);
         }
 
         /**
-         * Creates the signed request https-url for the given service using the given {@link AmazonAuthenticationInformation}.
+         * Creates the signed request https-url for the given service using the given {@link AwsAuthentication}.
          *
          * @param amazonServiceUrl The url of the Amazon service that shall be used.
-         * @param authentication   The {@link AmazonAuthenticationInformation} that shall be used.
+         * @param authentication   The {@link AwsAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createSecureRequestUrl(final String amazonServiceUrl, final AmazonAuthenticationInformation authentication) {
+        public String createSecureRequestUrl(final String amazonServiceUrl, final AwsAuthentication authentication) {
             return createRequestUrl(amazonServiceUrl, authentication, HTTPS_PROTOCOL);
         }
 
-        private String createRequestUrl(final String amazonServiceUrl, final AmazonAuthenticationInformation authentication, final String protocol) {
+        private String createRequestUrl(final String amazonServiceUrl, final AwsAuthentication authentication, final String protocol) {
             final Map<String, String> requestPairs = new LinkedHashMap<>();
             requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
             requestPairs.put("AssociateTag", authentication.getAssociateTag());

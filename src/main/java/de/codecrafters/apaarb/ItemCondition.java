@@ -5,7 +5,7 @@ package de.codecrafters.apaarb;
  *
  * @author ISchwarz
  */
-public enum AmazonItemCondition {
+public enum ItemCondition {
 
     ALL("All"),
     NEW("New"),
@@ -15,7 +15,7 @@ public enum AmazonItemCondition {
 
     private final String requestValue;
 
-    AmazonItemCondition(final String requestValue) {
+    ItemCondition(final String requestValue) {
         this.requestValue = requestValue;
     }
 

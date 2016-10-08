@@ -9,7 +9,11 @@ public final class AmazonAuthentication {
     private final String awsAccessKeyId;
     private final String awsSecretKey;
 
-    public AmazonAuthentication(String associateTag, String awsAccessKeyId, String awsSecretKey) {
+    public static AmazonAuthentication create(final String associateTag, final String awsAccessKeyId, final String awsSecretKey) {
+        return new AmazonAuthentication(associateTag, awsAccessKeyId, awsSecretKey);
+    }
+
+    private AmazonAuthentication(final String associateTag, final String awsAccessKeyId, final String awsSecretKey) {
         this.associateTag = associateTag;
         this.awsAccessKeyId = awsAccessKeyId;
         this.awsSecretKey = awsSecretKey;

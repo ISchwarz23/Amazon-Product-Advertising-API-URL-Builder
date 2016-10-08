@@ -14,11 +14,11 @@ import java.util.*;
  */
 public final class AmazonRequestBuilder {
 
-    public static final AmazonItemLookupRequestBuilder forItemLookup(String itemId, AmazonItem.Id.Type itemIdType) {
-        return forItemLookup(new AmazonItem.Id(itemId, itemIdType));
+    public static AmazonItemLookupRequestBuilder forItemLookup(final String itemId, final AmazonItem.Id.Type itemIdType) {
+        return forItemLookup(AmazonItem.Id.create(itemId, itemIdType));
     }
 
-    public static final AmazonItemLookupRequestBuilder forItemLookup(AmazonItem.Id itemId) {
+    public static AmazonItemLookupRequestBuilder forItemLookup(final AmazonItem.Id itemId) {
         return new AmazonItemLookupRequestBuilder(itemId);
     }
 
@@ -41,9 +41,9 @@ public final class AmazonRequestBuilder {
         VARIATION_SUMMARY("VariationSummary"),
         VARIATIONS("Variatinos");
 
-        private String requestValue;
+        private final String requestValue;
 
-        ItemInformation(String requestValue) {
+        ItemInformation(final String requestValue) {
             this.requestValue = requestValue;
         }
 
@@ -64,27 +64,27 @@ public final class AmazonRequestBuilder {
         private static final String HMAC_SHA256_ALGORITHM = "HmacSHA256";
         private static final String UTF8_CHARSET = "UTF-8";
 
+        private final List<ItemInformation> responseGroups = new ArrayList<>();
         private final AmazonItem.Id itemId;
 
-        private List<ItemInformation> responseGroups = new ArrayList<>();
         private AmazonItem.Condition itemCondition = AmazonItem.Condition.ALL;
 
-        private AmazonItemLookupRequestBuilder(AmazonItem.Id itemId) {
+        private AmazonItemLookupRequestBuilder(final AmazonItem.Id itemId) {
             this.itemId = itemId;
             DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
         }
 
-        public AmazonItemLookupRequestBuilder withInfoAbout(ItemInformation itemInformation) {
+        public AmazonItemLookupRequestBuilder withInfoAbout(final ItemInformation itemInformation) {
             responseGroups.add(itemInformation);
             return this;
         }
 
-        public AmazonItemLookupRequestBuilder withCondition(AmazonItem.Condition itemCondition) {
+        public AmazonItemLookupRequestBuilder withCondition(final AmazonItem.Condition itemCondition) {
             this.itemCondition = itemCondition;
             return this;
         }
 
-        public String buildUrlFor(String amazonServiceUrl, AmazonAuthentication authentication) {
+        public String buildUrlFor(final String amazonServiceUrl, final AmazonAuthentication authentication) {
             if (responseGroups.size() == 0) {
                 responseGroups.add(ItemInformation.ITEM_ATTRIBUES);
             }
@@ -97,7 +97,7 @@ public final class AmazonRequestBuilder {
                 responseGroup += responseGroups.get(i).getRequestValue();
             }
 
-            Map<String, String> requestPairs = new LinkedHashMap<>();
+            final Map<String, String> requestPairs = new LinkedHashMap<>();
             requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKeyId());
             requestPairs.put("AssociateTag", authentication.getAssociateTag());
             requestPairs.put("Condition", itemCondition.getRequestValue());
@@ -112,44 +112,44 @@ public final class AmazonRequestBuilder {
             return createSignedUrl(amazonServiceUrl, requestPairs, authentication.getAwsSecretKey());
         }
 
-        private String createSignedUrl(String amazonServiceUrl, Map<String, String> requestPairs, String key) {
+        private String createSignedUrl(final String amazonServiceUrl, final Map<String, String> requestPairs, final String key) {
             // The parameters need to be processed in lexicographical order, so we'll
             // use a TreeMap implementation for that.
-            SortedMap<String, String> sortedParamMap = new TreeMap<>(requestPairs);
+            final SortedMap<String, String> sortedParamMap = new TreeMap<>(requestPairs);
 
             // get the canonical form the query string
-            String canonicalQS = canonicalize(sortedParamMap);
+            final String canonicalQS = canonicalize(sortedParamMap);
 
             // create the string upon which the signature is calculated
-            String toSign = "GET" + "\n"
+            final String toSign = "GET" + "\n"
                     + amazonServiceUrl + "\n"
                     + ROUTE + "\n"
                     + canonicalQS;
 
             // get the signature
-            String hmac = hmac(toSign, key);
-            String sig = percentEncodeRfc3986(hmac);
+            final String hmac = hmac(toSign, key);
+            final String sig = percentEncodeRfc3986(hmac);
 
             // construct the URL
             return PROTOCOL + amazonServiceUrl + ROUTE + "?" + canonicalQS + "&Signature=" + sig;
         }
 
-        private String hmac(String stringToSign, String awsSecretKey) {
+        private String hmac(final String stringToSign, final String awsSecretKey) {
             String signature = null;
-            byte[] data;
-            byte[] rawHmac;
+            final byte[] data;
+            final byte[] rawHmac;
             try {
                 data = stringToSign.getBytes("UTF-8");
-                Mac mac = Mac.getInstance(HMAC_SHA256_ALGORITHM);
+                final Mac mac = Mac.getInstance(HMAC_SHA256_ALGORITHM);
 
-                byte[] secretyKeyBytes = awsSecretKey.getBytes(UTF8_CHARSET);
-                SecretKeySpec secretKeySpec = new SecretKeySpec(secretyKeyBytes, HMAC_SHA256_ALGORITHM);
+                final byte[] secretKeyBytes = awsSecretKey.getBytes(UTF8_CHARSET);
+                final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeyBytes, HMAC_SHA256_ALGORITHM);
 
                 mac.init(secretKeySpec);
                 rawHmac = mac.doFinal(data);
-                Base64.Encoder encoder = Base64.getEncoder();
+                final Base64.Encoder encoder = Base64.getEncoder();
                 signature = new String(encoder.encode(rawHmac));
-            } catch (UnsupportedEncodingException e) {
+            } catch (final UnsupportedEncodingException e) {
                 throw new RuntimeException(UTF8_CHARSET + " is unsupported!", e);
             } catch (NoSuchAlgorithmException | InvalidKeyException e) {
                 e.printStackTrace();
@@ -157,16 +157,18 @@ public final class AmazonRequestBuilder {
             return signature;
         }
 
-        private String canonicalize(SortedMap<String, String> sortedParamMap) {
+        private String canonicalize(final SortedMap<String, String> sortedParamMap) {
             if (sortedParamMap.isEmpty()) {
                 return "";
             }
 
-            StringBuilder buffer = new StringBuilder();
-            Iterator<Map.Entry<String, String>> iter = sortedParamMap.entrySet().iterator();
+            final StringBuilder buffer = new StringBuilder();
+            final Iterator<Map.Entry<String, String>> iter;
+            iter = sortedParamMap.entrySet().iterator();
 
             while (iter.hasNext()) {
-                Map.Entry<String, String> kvpair = iter.next();
+                final Map.Entry<String, String> kvpair;
+                kvpair = iter.next();
                 buffer.append(percentEncodeRfc3986(kvpair.getKey()));
                 buffer.append("=");
                 buffer.append(percentEncodeRfc3986(kvpair.getValue()));
@@ -177,14 +179,14 @@ public final class AmazonRequestBuilder {
             return buffer.toString();
         }
 
-        private String percentEncodeRfc3986(String s) {
+        private String percentEncodeRfc3986(final String s) {
             String out;
             try {
                 out = URLEncoder.encode(s, "UTF-8")
                         .replace("+", "%20")
                         .replace("*", "%2A")
                         .replace("%7E", "~");
-            } catch (UnsupportedEncodingException e) {
+            } catch (final UnsupportedEncodingException e) {
                 out = s;
             }
             return out;

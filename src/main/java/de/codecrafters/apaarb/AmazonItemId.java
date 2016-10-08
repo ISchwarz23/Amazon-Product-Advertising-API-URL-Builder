@@ -1,10 +1,17 @@
 package de.codecrafters.apaarb;
 
 /**
- * Created by Ingo on 08.10.2016.
+ * Value-based data class representing the ID of an Amazon item. It supports all ID-types available at Amazon.
+ *
+ * @author ISchwarz
  */
 public final class AmazonItemId {
 
+    /**
+     * The {@link AmazonItemId.Type} contains all available IDs managed by amazon.
+     *
+     * @author ISchwarz
+     */
     public enum Type {
 
         ASIN("ASIN"),
@@ -26,35 +33,76 @@ public final class AmazonItemId {
     private final String value;
     private final Type type;
 
-    public static AmazonItemId createAsin(final String asinValue) {
-        return new AmazonItemId(asinValue, Type.ASIN);
-    }
-
-    public static AmazonItemId createEan(final String eanValue) {
-        return new AmazonItemId(eanValue, Type.EAN);
-    }
-
-    public static AmazonItemId createIsbn(final String isbnValue) {
-        return new AmazonItemId(isbnValue, Type.ISBN);
-    }
-
-    public static AmazonItemId createUpc(final String upcValue) {
-        return new AmazonItemId(upcValue, Type.UPC);
-    }
-
-    public static AmazonItemId create(final String idValue, final Type idType) {
-        return new AmazonItemId(idValue, idType);
-    }
-
     private AmazonItemId(final String value, final Type type) {
         this.value = value;
         this.type = type;
     }
 
+    /**
+     * Creates an {@link AmazonItemId} of type ASIN with the given value.
+     *
+     * @param asinValue The ASIN value of the {@link AmazonItemId}.
+     * @return The created {@link AmazonItemId} of type ASIN.
+     */
+    public static AmazonItemId createAsin(final String asinValue) {
+        return create(asinValue, Type.ASIN);
+    }
+
+    /**
+     * Creates an {@link AmazonItemId} of type EAN with the given value.
+     *
+     * @param eanValue The EAN value of the {@link AmazonItemId}.
+     * @return The created {@link AmazonItemId} of type EAN.
+     */
+    public static AmazonItemId createEan(final String eanValue) {
+        return create(eanValue, Type.EAN);
+    }
+
+    /**
+     * Creates an {@link AmazonItemId} of type ISBN with the given value.
+     *
+     * @param isbnValue The ISBN value of the {@link AmazonItemId}.
+     * @return The created {@link AmazonItemId} of type ISBN.
+     */
+    public static AmazonItemId createIsbn(final String isbnValue) {
+        return create(isbnValue, Type.ISBN);
+    }
+
+    /**
+     * Creates an {@link AmazonItemId} of type UPC with the given value.
+     *
+     * @param upcValue The UPC value of the {@link AmazonItemId}.
+     * @return The created {@link AmazonItemId} of type UPC.
+     */
+    public static AmazonItemId createUpc(final String upcValue) {
+        return create(upcValue, Type.UPC);
+    }
+
+    /**
+     * Creates an {@link AmazonItemId} of given type with the given value.
+     *
+     * @param idValue The value of the {@link AmazonItemId}.
+     * @param idType  The type of the {@link AmazonItemId}.
+     * @return The created {@link AmazonItemId} of the given type.
+     */
+    static AmazonItemId create(final String idValue, final Type idType) {
+        return new AmazonItemId(idValue, idType);
+    }
+
+    /**
+     * Gives the value of this {@link AmazonItemId}.
+     *
+     * @return The value of this {@link AmazonItemId}.
+     */
     public String getValue() {
         return value;
     }
 
+    /**
+     * Gives the type of the {@link AmazonItemId}.
+     *
+     * @return The type of the {@link AmazonItemId}.
+     */
     public Type getType() {
         return type;
     }
@@ -76,7 +124,7 @@ public final class AmazonItemId {
 
     @Override
     public String toString() {
-        return "Id{" +
+        return "AmazonItemId{" +
                 "value='" + value + '\'' +
                 ", type=" + type +
                 '}';

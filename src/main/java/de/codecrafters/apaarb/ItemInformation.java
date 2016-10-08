@@ -8,7 +8,7 @@ package de.codecrafters.apaarb;
 public enum ItemInformation {
 
     IMAGES("Images"),
-    ITEM_ATTRIBUTES("ItemAttributes"),
+    ATTRIBUTES("ItemAttributes"),
     OFFERS("Offers"),
     ACCESSORIES("Accessories"),
     ALTERNATIVE_VERSIONS("AlternativeVersions"),

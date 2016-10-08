@@ -6,7 +6,9 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Created by Ingo on 08.10.2016.
+ * Usage example of the {@link AdvertisingApiRequestBuilder}.
+ *
+ * @author ISchwarz
  */
 public class AdvertisingApiRequestBuilderTest {
 
@@ -18,14 +20,76 @@ public class AdvertisingApiRequestBuilderTest {
     @Before
     public void setUp() throws Exception {
         itemId = ItemId.createAsin("B01BKISLYC");
-        authentication = AwsAuthentication.create("sdfg", "sdfsdf", "sdfsdf");
+        authentication = AwsAuthentication.create("sdfsdf", "sdfsdf", "sdfsdf");
     }
 
     @Test
-    public void testSimpleRequest() throws Exception {
+    public void testRequestUrlCreation() throws Exception {
         final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
-                .withCondition(ItemCondition.NEW)
-                .withInfoAbout(ItemInformation.ITEM_ATTRIBUTES)
+                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+
+        System.out.println(requestUrl);
+        assertNotNull(requestUrl);
+    }
+
+    @Test
+    public void testRequestUrlCreationWithConditionFilter() throws Exception {
+        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+                .withConditionFilter(ItemCondition.NEW)
+                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+
+        System.out.println(requestUrl);
+        assertNotNull(requestUrl);
+    }
+
+    @Test
+    public void testRequestUrlCreationWithSpecialInformation() throws Exception {
+        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+                .withInfoAbout(ItemInformation.ATTRIBUTES)
+                .withInfoAbout(ItemInformation.IMAGES)
+                .withInfoAbout(ItemInformation.OFFERS)
+                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+
+        System.out.println(requestUrl);
+        assertNotNull(requestUrl);
+    }
+
+    @Test
+    public void testRequestUrlCreationWithConditionFilterAndSpecialInformation() throws Exception {
+        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+                .withConditionFilter(ItemCondition.NEW)
+                .withInfoAbout(ItemInformation.ATTRIBUTES)
+                .withInfoAbout(ItemInformation.IMAGES)
+                .withInfoAbout(ItemInformation.OFFERS)
+                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+
+        System.out.println(requestUrl);
+        assertNotNull(requestUrl);
+    }
+
+    @Test
+    public void testSecureRequestUrlCreation() throws Exception {
+        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
+
+        System.out.println(requestUrl);
+        assertNotNull(requestUrl);
+    }
+
+    @Test
+    public void testSecureRequestUrlCreationWithConditionFilter() throws Exception {
+        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+                .withConditionFilter(ItemCondition.NEW)
+                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
+
+        System.out.println(requestUrl);
+        assertNotNull(requestUrl);
+    }
+
+    @Test
+    public void testSecureRequestUrlCreationWithSpecialInformation() throws Exception {
+        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+                .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
                 .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
@@ -34,4 +98,16 @@ public class AdvertisingApiRequestBuilderTest {
         assertNotNull(requestUrl);
     }
 
+    @Test
+    public void testSecureRequestUrlCreationWithConditionFilterAndSpecialInformation() throws Exception {
+        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+                .withConditionFilter(ItemCondition.NEW)
+                .withInfoAbout(ItemInformation.ATTRIBUTES)
+                .withInfoAbout(ItemInformation.IMAGES)
+                .withInfoAbout(ItemInformation.OFFERS)
+                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
+
+        System.out.println(requestUrl);
+        assertNotNull(requestUrl);
+    }
 }

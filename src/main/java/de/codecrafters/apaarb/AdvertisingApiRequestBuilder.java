@@ -84,7 +84,7 @@ public final class AdvertisingApiRequestBuilder {
          * @param itemCondition The {@link ItemInformation} to filter the result of the returned items.
          * @return The current {@link AdvertisingApiItemLookupRequestBuilder}.
          */
-        public AdvertisingApiItemLookupRequestBuilder withCondition(final ItemCondition itemCondition) {
+        public AdvertisingApiItemLookupRequestBuilder withConditionFilter(final ItemCondition itemCondition) {
             this.itemCondition = itemCondition;
             return this;
         }
@@ -129,7 +129,7 @@ public final class AdvertisingApiRequestBuilder {
         private String createResponseGroupRequestValue() {
             // add item attributes to response group if none was selected
             if (responseGroup.size() == 0) {
-                responseGroup.add(ItemInformation.ITEM_ATTRIBUTES);
+                responseGroup.add(ItemInformation.ATTRIBUTES);
             }
 
             // build the response group request value from the list

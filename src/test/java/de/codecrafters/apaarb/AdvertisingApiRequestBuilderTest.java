@@ -12,8 +12,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AdvertisingApiRequestBuilderTest {
 
-    private static final String AMAZON_SERVICE_URL = "webservices.amazon.de";
-
     private AwsAuthentication authentication;
     private ItemId itemId;
 
@@ -26,7 +24,7 @@ public class AdvertisingApiRequestBuilderTest {
     @Test
     public void testRequestUrlCreation() throws Exception {
         final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
-                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);
@@ -36,7 +34,7 @@ public class AdvertisingApiRequestBuilderTest {
     public void testRequestUrlCreationWithConditionFilter() throws Exception {
         final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withConditionFilter(ItemCondition.NEW)
-                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);
@@ -48,7 +46,7 @@ public class AdvertisingApiRequestBuilderTest {
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
-                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);
@@ -61,7 +59,7 @@ public class AdvertisingApiRequestBuilderTest {
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
-                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);
@@ -70,7 +68,7 @@ public class AdvertisingApiRequestBuilderTest {
     @Test
     public void testSecureRequestUrlCreation() throws Exception {
         final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
-                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);
@@ -80,7 +78,7 @@ public class AdvertisingApiRequestBuilderTest {
     public void testSecureRequestUrlCreationWithConditionFilter() throws Exception {
         final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withConditionFilter(ItemCondition.NEW)
-                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);
@@ -92,7 +90,7 @@ public class AdvertisingApiRequestBuilderTest {
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
-                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);
@@ -105,7 +103,7 @@ public class AdvertisingApiRequestBuilderTest {
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
-                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createSecureRequestUrl(AmazonWebServiceLocation.COM, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);

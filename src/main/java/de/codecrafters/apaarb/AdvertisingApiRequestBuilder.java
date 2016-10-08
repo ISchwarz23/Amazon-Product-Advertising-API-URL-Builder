@@ -92,26 +92,26 @@ public final class AdvertisingApiRequestBuilder {
         /**
          * Creates the signed request http-url for the given service using the given {@link AwsAuthentication}.
          *
-         * @param amazonServiceUrl The url of the Amazon service that shall be used.
-         * @param authentication   The {@link AwsAuthentication} that shall be used.
+         * @param serviceLocation The location of the Amazon service that shall be used.
+         * @param authentication  The {@link AwsAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createRequestUrl(final String amazonServiceUrl, final AwsAuthentication authentication) {
-            return createRequestUrl(amazonServiceUrl, authentication, HTTP_PROTOCOL);
+        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AwsAuthentication authentication) {
+            return createRequestUrl(serviceLocation, authentication, HTTP_PROTOCOL);
         }
 
         /**
          * Creates the signed request https-url for the given service using the given {@link AwsAuthentication}.
          *
-         * @param amazonServiceUrl The url of the Amazon service that shall be used.
-         * @param authentication   The {@link AwsAuthentication} that shall be used.
+         * @param serviceLocation The location of the Amazon service that shall be used.
+         * @param authentication  The {@link AwsAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createSecureRequestUrl(final String amazonServiceUrl, final AwsAuthentication authentication) {
-            return createRequestUrl(amazonServiceUrl, authentication, HTTPS_PROTOCOL);
+        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation, final AwsAuthentication authentication) {
+            return createRequestUrl(serviceLocation, authentication, HTTPS_PROTOCOL);
         }
 
-        private String createRequestUrl(final String amazonServiceUrl, final AwsAuthentication authentication, final String protocol) {
+        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AwsAuthentication authentication, final String protocol) {
             final Map<String, String> requestPairs = new LinkedHashMap<>();
             requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
             requestPairs.put("AssociateTag", authentication.getAssociateTag());
@@ -123,7 +123,7 @@ public final class AdvertisingApiRequestBuilder {
             requestPairs.put("Service", SERVICE);
             requestPairs.put("Timestamp", DATE_FORMATTER.format(new Date()));
             requestPairs.put("Version", VERSION);
-            return createSignedUrl(amazonServiceUrl, requestPairs, authentication.getAwsSecretKey(), protocol);
+            return createSignedUrl(serviceLocation.getWebServiceUrl(), requestPairs, authentication.getAwsSecretKey(), protocol);
         }
 
         private String createResponseGroupRequestValue() {

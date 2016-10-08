@@ -7,15 +7,15 @@ package de.codecrafters.apaarb;
  */
 public enum ItemInformation {
 
-    IMAGES("Images"),
-    ATTRIBUTES("ItemAttributes"),
-    OFFERS("Offers"),
     ACCESSORIES("Accessories"),
     ALTERNATIVE_VERSIONS("AlternativeVersions"),
+    ATTRIBUTES("ItemAttributes"),
     BROWSE_NODES("BrowseNodes"),
     EDITORIAL_REVIEW("EditorialReview"),
+    IMAGES("Images"),
     OFFER_FULL("OfferFull"),
     OFFER_SUMMARY("OfferSummary"),
+    OFFERS("Offers"),
     REVIEWS("Reviews"),
     SALES_RANK("SalesRank"),
     SIMILARITIES("Similarities"),

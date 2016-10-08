@@ -14,11 +14,11 @@ import java.util.*;
  */
 public final class AmazonRequestBuilder {
 
-    public static AmazonItemLookupRequestBuilder forItemLookup(final String itemId, final AmazonItem.Id.Type itemIdType) {
-        return forItemLookup(AmazonItem.Id.create(itemId, itemIdType));
+    public static AmazonItemLookupRequestBuilder forItemLookup(final String itemId, final AmazonItemId.Type itemIdType) {
+        return forItemLookup(AmazonItemId.create(itemId, itemIdType));
     }
 
-    public static AmazonItemLookupRequestBuilder forItemLookup(final AmazonItem.Id itemId) {
+    public static AmazonItemLookupRequestBuilder forItemLookup(final AmazonItemId itemId) {
         return new AmazonItemLookupRequestBuilder(itemId);
     }
 
@@ -55,6 +55,7 @@ public final class AmazonRequestBuilder {
     public static final class AmazonItemLookupRequestBuilder {
 
         private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
         private static final String PROTOCOL = "http://";
         private static final String ROUTE = "/onca/xml";
         private static final String VERSION = "2011-08-01";
@@ -65,11 +66,11 @@ public final class AmazonRequestBuilder {
         private static final String UTF8_CHARSET = "UTF-8";
 
         private final List<ItemInformation> responseGroups = new ArrayList<>();
-        private final AmazonItem.Id itemId;
+        private final AmazonItemId itemId;
 
-        private AmazonItem.Condition itemCondition = AmazonItem.Condition.ALL;
+        private AmazonItemCondition itemCondition = AmazonItemCondition.ALL;
 
-        private AmazonItemLookupRequestBuilder(final AmazonItem.Id itemId) {
+        private AmazonItemLookupRequestBuilder(final AmazonItemId itemId) {
             this.itemId = itemId;
             DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone("GMT"));
         }
@@ -79,7 +80,7 @@ public final class AmazonRequestBuilder {
             return this;
         }
 
-        public AmazonItemLookupRequestBuilder withCondition(final AmazonItem.Condition itemCondition) {
+        public AmazonItemLookupRequestBuilder withCondition(final AmazonItemCondition itemCondition) {
             this.itemCondition = itemCondition;
             return this;
         }

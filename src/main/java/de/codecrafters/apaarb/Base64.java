@@ -145,12 +145,11 @@ final class Base64 {
         };
 
         private static final int MIMELINEMAX = 76;
-        private static final byte[] CRLF = new byte[]{'\r', '\n'};
 
         static final Encoder RFC4648 = new Encoder(false, null, -1, true);
 
         private int outLength(final int srclen) {
-            int len = 0;
+            int len;
             if (doPadding) {
                 len = 4 * ((srclen + 2) / 3);
             } else {

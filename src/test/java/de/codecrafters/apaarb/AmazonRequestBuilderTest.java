@@ -28,7 +28,7 @@ public class AmazonRequestBuilderTest {
                 .withInfoAbout(AmazonRequestBuilder.ItemInformation.ITEM_ATTRIBUTES)
                 .withInfoAbout(AmazonRequestBuilder.ItemInformation.IMAGES)
                 .withInfoAbout(AmazonRequestBuilder.ItemInformation.OFFERS)
-                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
+                .createSecureRequestUrl(AMAZON_SERVICE_URL, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);

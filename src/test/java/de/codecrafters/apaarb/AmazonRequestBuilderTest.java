@@ -10,25 +10,25 @@ import static org.junit.Assert.assertNotNull;
  */
 public class AmazonRequestBuilderTest {
 
-    private static final String AMAZON_SERVICE_URL = "mypreferedawsnode.amazon.com";
+    private static final String AMAZON_SERVICE_URL = "webservices.amazon.de";
 
     private AmazonAuthenticationInformation authentication;
     private AmazonItemId itemId;
 
     @Before
     public void setUp() throws Exception {
-        itemId = AmazonItemId.createAsin("MYT3ST4S1N");
-        authentication = AmazonAuthenticationInformation.create("MyAssociateTag", "MyAccessKey", "MySecretCKey");
+        itemId = AmazonItemId.createAsin("B01BKISLYC");
+        authentication = AmazonAuthenticationInformation.create("sdfg", "sdfsdf", "sdfsdf");
     }
 
     @Test
     public void testSimpleRequest() throws Exception {
         final String requestUrl = AmazonRequestBuilder.forItemLookup(itemId)
                 .withCondition(AmazonItemCondition.NEW)
-                .withInfoAbout(AmazonRequestBuilder.ItemInformation.ITEM_ATTRIBUES)
+                .withInfoAbout(AmazonRequestBuilder.ItemInformation.ITEM_ATTRIBUTES)
                 .withInfoAbout(AmazonRequestBuilder.ItemInformation.IMAGES)
                 .withInfoAbout(AmazonRequestBuilder.ItemInformation.OFFERS)
-                .buildUrlFor(AMAZON_SERVICE_URL, authentication);
+                .createRequestUrl(AMAZON_SERVICE_URL, authentication);
 
         System.out.println(requestUrl);
         assertNotNull(requestUrl);

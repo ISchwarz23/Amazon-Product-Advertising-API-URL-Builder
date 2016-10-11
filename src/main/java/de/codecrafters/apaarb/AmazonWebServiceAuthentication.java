@@ -5,28 +5,28 @@ package de.codecrafters.apaarb;
  *
  * @author ISchwarz
  */
-public final class AwsAuthentication {
+public final class AmazonWebServiceAuthentication {
 
     private final String associateTag;
     private final String awsAccessKey;
     private final String awsSecretKey;
 
-    private AwsAuthentication(final String associateTag, final String awsAccessKey, final String awsSecretKey) {
+    private AmazonWebServiceAuthentication(final String associateTag, final String awsAccessKey, final String awsSecretKey) {
         this.associateTag = associateTag;
         this.awsAccessKey = awsAccessKey;
         this.awsSecretKey = awsSecretKey;
     }
 
     /**
-     * Creates a new {@link AwsAuthentication} with the given values.
+     * Creates a new {@link AmazonWebServiceAuthentication} with the given values.
      *
      * @param associateTag The associate tag identifying the user of the Amazon service.
      * @param awsAccessKey The access key needed to access a Amazon service.
      * @param awsSecretKey The secret key needed to access a Amazon service.
-     * @return The created {@link AwsAuthentication} containing the given values.
+     * @return The created {@link AmazonWebServiceAuthentication} containing the given values.
      */
-    public static AwsAuthentication create(final String associateTag, final String awsAccessKey, final String awsSecretKey) {
-        return new AwsAuthentication(associateTag, awsAccessKey, awsSecretKey);
+    public static AmazonWebServiceAuthentication create(final String associateTag, final String awsAccessKey, final String awsSecretKey) {
+        return new AmazonWebServiceAuthentication(associateTag, awsAccessKey, awsSecretKey);
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.*;
  *
  * @author ISchwarz
  */
-public final class AdvertisingApiRequestBuilder {
+public final class AmazonProductAdvertisingApiRequestBuilder {
 
     /**
      * Creates an {@link AdvertisingApiItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
@@ -90,28 +90,28 @@ public final class AdvertisingApiRequestBuilder {
         }
 
         /**
-         * Creates the signed request http-url for the given service using the given {@link AwsAuthentication}.
+         * Creates the signed request http-url for the given service using the given {@link AmazonWebServiceAuthentication}.
          *
          * @param serviceLocation The location of the Amazon service that shall be used.
-         * @param authentication  The {@link AwsAuthentication} that shall be used.
+         * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AwsAuthentication authentication) {
+        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AmazonWebServiceAuthentication authentication) {
             return createRequestUrl(serviceLocation, authentication, HTTP_PROTOCOL);
         }
 
         /**
-         * Creates the signed request https-url for the given service using the given {@link AwsAuthentication}.
+         * Creates the signed request https-url for the given service using the given {@link AmazonWebServiceAuthentication}.
          *
          * @param serviceLocation The location of the Amazon service that shall be used.
-         * @param authentication  The {@link AwsAuthentication} that shall be used.
+         * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation, final AwsAuthentication authentication) {
+        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation, final AmazonWebServiceAuthentication authentication) {
             return createRequestUrl(serviceLocation, authentication, HTTPS_PROTOCOL);
         }
 
-        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AwsAuthentication authentication, final String protocol) {
+        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AmazonWebServiceAuthentication authentication, final String protocol) {
             final Map<String, String> requestPairs = new LinkedHashMap<>();
             requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
             requestPairs.put("AssociateTag", authentication.getAssociateTag());

@@ -6,24 +6,24 @@ import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
 
 /**
- * Usage example of the {@link AdvertisingApiRequestBuilder}.
+ * Usage example of the {@link AmazonProductAdvertisingApiRequestBuilder}.
  *
  * @author ISchwarz
  */
-public class AdvertisingApiRequestBuilderTest {
+public class AmazonProductAdvertisingApiRequestBuilderTest {
 
-    private AwsAuthentication authentication;
+    private AmazonWebServiceAuthentication authentication;
     private ItemId itemId;
 
     @Before
     public void setUp() throws Exception {
         itemId = ItemId.createAsin("B01BKISLYC");
-        authentication = AwsAuthentication.create("sdfsdf", "sdfsdf", "sdfsdf");
+        authentication = AmazonWebServiceAuthentication.create("sdfsdf", "sdfsdf", "sdfsdf");
     }
 
     @Test
     public void testRequestUrlCreation() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
@@ -32,7 +32,7 @@ public class AdvertisingApiRequestBuilderTest {
 
     @Test
     public void testRequestUrlCreationWithConditionFilter() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withConditionFilter(ItemCondition.NEW)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
@@ -42,7 +42,7 @@ public class AdvertisingApiRequestBuilderTest {
 
     @Test
     public void testRequestUrlCreationWithSpecialInformation() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
@@ -54,7 +54,7 @@ public class AdvertisingApiRequestBuilderTest {
 
     @Test
     public void testRequestUrlCreationWithConditionFilterAndSpecialInformation() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withConditionFilter(ItemCondition.NEW)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
@@ -67,7 +67,7 @@ public class AdvertisingApiRequestBuilderTest {
 
     @Test
     public void testSecureRequestUrlCreation() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         System.out.println(requestUrl);
@@ -76,7 +76,7 @@ public class AdvertisingApiRequestBuilderTest {
 
     @Test
     public void testSecureRequestUrlCreationWithConditionFilter() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withConditionFilter(ItemCondition.NEW)
                 .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
@@ -86,7 +86,7 @@ public class AdvertisingApiRequestBuilderTest {
 
     @Test
     public void testSecureRequestUrlCreationWithSpecialInformation() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
@@ -98,7 +98,7 @@ public class AdvertisingApiRequestBuilderTest {
 
     @Test
     public void testSecureRequestUrlCreationWithConditionFilterAndSpecialInformation() throws Exception {
-        final String requestUrl = AdvertisingApiRequestBuilder.forItemLookup(itemId)
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(itemId)
                 .withConditionFilter(ItemCondition.NEW)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)

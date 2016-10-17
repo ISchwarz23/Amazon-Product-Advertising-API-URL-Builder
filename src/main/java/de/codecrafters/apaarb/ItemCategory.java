@@ -1,7 +1,9 @@
 package de.codecrafters.apaarb;
 
 /**
- * Created by Ingo on 16.10.2016.
+ * Listing of all Item Categories managed by Amazon.
+ *
+ * @author ISchwarz
  */
 public enum ItemCategory {
 

@@ -68,7 +68,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
 
         private static final String OPERATION = "ItemSearch";
 
-        private final List<ItemInformation> responseGroup = new ArrayList<ItemInformation>();
+        private final List<ItemInformation> responseGroup = new ArrayList<>();
         private final String keywords;
 
         private ItemCondition itemCondition = ItemCondition.ALL;
@@ -167,7 +167,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
         private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
                                         final AmazonWebServiceAuthentication authentication, final String protocol) {
 
-            final Map<String, String> requestParams = new LinkedHashMap<String, String>();
+            final Map<String, String> requestParams = new LinkedHashMap<>();
             requestParams.put("AWSAccessKeyId", authentication.getAwsAccessKey());
             requestParams.put("AssociateTag", authentication.getAssociateTag());
             requestParams.put("Condition", itemCondition.getRequestValue());
@@ -199,7 +199,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
 
         private static final String OPERATION = "ItemLookup";
 
-        private final List<ItemInformation> responseGroup = new ArrayList<ItemInformation>();
+        private final List<ItemInformation> responseGroup = new ArrayList<>();
         private final ItemId itemId;
 
         private ItemCondition itemCondition = ItemCondition.ALL;
@@ -260,7 +260,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
         private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
                                         final AmazonWebServiceAuthentication authentication, final String protocol) {
 
-            final Map<String, String> requestParams = new LinkedHashMap<String, String>();
+            final Map<String, String> requestParams = new LinkedHashMap<>();
             requestParams.put("AWSAccessKeyId", authentication.getAwsAccessKey());
             requestParams.put("AssociateTag", authentication.getAssociateTag());
             requestParams.put("Condition", itemCondition.getRequestValue());

@@ -71,7 +71,7 @@ final class RequestUrlUtils {
     static String canonicalizeParameters(final Map<String, String> parameters) {
         // The parameters need to be processed in lexicographical order, so we'll
         // use a TreeMap implementation for that.
-        final TreeMap<String, String> sortedParamMap = new TreeMap<String, String>(parameters);
+        final TreeMap<String, String> sortedParamMap = new TreeMap<>(parameters);
 
         if (sortedParamMap.isEmpty()) {
             return "";

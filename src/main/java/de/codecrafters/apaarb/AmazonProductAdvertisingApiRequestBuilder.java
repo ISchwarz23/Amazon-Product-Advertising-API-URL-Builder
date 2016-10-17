@@ -1,11 +1,5 @@
 package de.codecrafters.apaarb;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -15,6 +9,10 @@ import java.util.*;
  * @author ISchwarz
  */
 public final class AmazonProductAdvertisingApiRequestBuilder {
+
+    private AmazonProductAdvertisingApiRequestBuilder() {
+        //no instance
+    }
 
     /**
      * Creates an {@link AdvertisingApiItemLookupRequestBuilder} for creating an ItemLookup request for the item with the given ID.
@@ -38,6 +36,158 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
     }
 
     /**
+     * Creates an {@link AdvertisingApiItemSearchRequestBuilder} for creating an ItemSearch request for the item matching the given keywords.
+     *
+     * @param keywords The keywords that shall be used to search for items.
+     * @return A new {@link AdvertisingApiItemSearchRequestBuilder} for creating an ItemSearch request for the item matching the given keywords.
+     */
+    public static AdvertisingApiItemSearchRequestBuilder forItemSearch(final String keywords) {
+        return new AdvertisingApiItemSearchRequestBuilder(keywords);
+    }
+
+    /**
+     * A builder that simplifies the creation of URLs for ItemSearch requests.
+     *
+     * @author ISchwarz
+     */
+    public static final class AdvertisingApiItemSearchRequestBuilder {
+
+        private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        private static final String DATE_FORMATTER_TIME_ZONE = "GMT";
+
+        private static final String HTTP_PROTOCOL = "http://";
+        private static final String HTTPS_PROTOCOL = "https://";
+
+        private static final String ROUTE = "/onca/xml";
+        private static final String VERSION = "2011-08-01";
+        private static final String SERVICE = "AWSECommerceService";
+        private static final String OPERATION = "ItemSearch";
+
+        private final List<ItemInformation> responseGroup = new ArrayList<>();
+        private final String keywords;
+
+        private ItemCondition itemCondition = ItemCondition.ALL;
+        private ItemCategory itemCategory = ItemCategory.ALL;
+        private int maximumPrice = -1;
+        private int minimumPrice = -1;
+
+        static {
+            DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(DATE_FORMATTER_TIME_ZONE));
+        }
+
+
+        private AdvertisingApiItemSearchRequestBuilder(final String keywords) {
+            this.keywords = keywords;
+        }
+
+        /**
+         * Sets the {@link ItemCondition} to filter the result of the returned items.
+         *
+         * @param itemCondition The {@link ItemInformation} to filter the result of the returned items.
+         * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
+         */
+        public AdvertisingApiItemSearchRequestBuilder withConditionFilter(final ItemCondition itemCondition) {
+            this.itemCondition = itemCondition;
+            return this;
+        }
+
+        /**
+         * Adds the given {@link ItemInformation} to the response group.
+         *
+         * @param itemInformation The {@link ItemInformation} that shall be added to the response group.
+         * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
+         */
+        public AdvertisingApiItemSearchRequestBuilder withInfoAbout(final ItemInformation itemInformation) {
+            responseGroup.add(itemInformation);
+            return this;
+        }
+
+        /**
+         * Specifies the {@link ItemCategory} that will be searched.
+         *
+         * @param itemCategory The {@link ItemCategory} that will be searched.
+         * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
+         */
+        public AdvertisingApiItemSearchRequestBuilder withCategoryFilter(final ItemCategory itemCategory) {
+            this.itemCategory = itemCategory;
+            return this;
+        }
+
+        /**
+         * Specifies the maximum item price in the response. Prices appear in the lowest currency denomination.
+         * For example, 3241 is $32.41.
+         *
+         * @param maximumPrice The maximum item price in the lowest currency denomination.
+         * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
+         */
+        public AdvertisingApiItemSearchRequestBuilder withMaximumPrice(final int maximumPrice) {
+            this.maximumPrice = maximumPrice;
+            return this;
+        }
+
+        /**
+         * Specifies the minimum item price in the response. Prices appear in the lowest currency denomination.
+         * For example, 3241 is $32.41.
+         *
+         * @param minimumPrice The minimum item price in the lowest currency denomination.
+         * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
+         */
+        public AdvertisingApiItemSearchRequestBuilder withMinimumPrice(final int minimumPrice) {
+            this.minimumPrice = minimumPrice;
+            return this;
+        }
+
+        /**
+         * Creates the signed request http-url for the given service using the given {@link AmazonWebServiceAuthentication}.
+         *
+         * @param serviceLocation The location of the Amazon service that shall be used.
+         * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
+         * @return The created signed request url.
+         */
+        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
+                                       final AmazonWebServiceAuthentication authentication) {
+
+            return createRequestUrl(serviceLocation, authentication, HTTP_PROTOCOL);
+        }
+
+        /**
+         * Creates the signed request https-url for the given service using the given {@link AmazonWebServiceAuthentication}.
+         *
+         * @param serviceLocation The location of the Amazon service that shall be used.
+         * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
+         * @return The created signed request url.
+         */
+        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation,
+                                             final AmazonWebServiceAuthentication authentication) {
+
+            return createRequestUrl(serviceLocation, authentication, HTTPS_PROTOCOL);
+        }
+
+        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
+                                        final AmazonWebServiceAuthentication authentication, final String protocol) {
+
+            final Map<String, String> requestPairs = new LinkedHashMap<>();
+            requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
+            requestPairs.put("AssociateTag", authentication.getAssociateTag());
+            requestPairs.put("Condition", itemCondition.getRequestValue());
+            requestPairs.put("Keywords", keywords);
+            requestPairs.put("Operation", OPERATION);
+            requestPairs.put("ResponseGroup", createResponseGroupRequestValue(responseGroup));
+            requestPairs.put("SearchIndex", itemCategory.getRequestValue());
+            requestPairs.put("Service", SERVICE);
+            requestPairs.put("Timestamp", DATE_FORMATTER.format(new Date()));
+            requestPairs.put("Version", VERSION);
+            if (maximumPrice != -1) {
+                requestPairs.put("MaximumPrice", "" + maximumPrice);
+            }
+            if (minimumPrice != -1) {
+                requestPairs.put("MinimumPrice", "" + minimumPrice);
+            }
+            return HashUtils.createSignedUrl(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestPairs, authentication.getAwsSecretKey());
+        }
+    }
+
+    /**
      * A builder that simplifies the creation of URLs for ItemLookup requests.
      *
      * @author ISchwarz
@@ -54,17 +204,17 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
         private static final String SERVICE = "AWSECommerceService";
         private static final String OPERATION = "ItemLookup";
 
-        private static final String HMAC_SHA256_ALGORITHM = "HmacSHA256";
-        private static final String UTF8_CHARSET = "UTF-8";
-
         private final List<ItemInformation> responseGroup = new ArrayList<>();
         private final ItemId itemId;
 
         private ItemCondition itemCondition = ItemCondition.ALL;
 
+        static {
+            DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(DATE_FORMATTER_TIME_ZONE));
+        }
+
         private AdvertisingApiItemLookupRequestBuilder(final ItemId itemId) {
             this.itemId = itemId;
-            DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(DATE_FORMATTER_TIME_ZONE));
         }
 
         /**
@@ -96,7 +246,9 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AmazonWebServiceAuthentication authentication) {
+        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
+                                       final AmazonWebServiceAuthentication authentication) {
+
             return createRequestUrl(serviceLocation, authentication, HTTP_PROTOCOL);
         }
 
@@ -107,11 +259,15 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation, final AmazonWebServiceAuthentication authentication) {
+        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation,
+                                             final AmazonWebServiceAuthentication authentication) {
+
             return createRequestUrl(serviceLocation, authentication, HTTPS_PROTOCOL);
         }
 
-        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation, final AmazonWebServiceAuthentication authentication, final String protocol) {
+        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
+                                        final AmazonWebServiceAuthentication authentication, final String protocol) {
+
             final Map<String, String> requestPairs = new LinkedHashMap<>();
             requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
             requestPairs.put("AssociateTag", authentication.getAssociateTag());
@@ -119,107 +275,27 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
             requestPairs.put("IdType", itemId.getType().getRequestValue());
             requestPairs.put("ItemId", itemId.getValue());
             requestPairs.put("Operation", OPERATION);
-            requestPairs.put("ResponseGroup", createResponseGroupRequestValue());
+            requestPairs.put("ResponseGroup", createResponseGroupRequestValue(responseGroup));
             requestPairs.put("Service", SERVICE);
             requestPairs.put("Timestamp", DATE_FORMATTER.format(new Date()));
             requestPairs.put("Version", VERSION);
-            return createSignedUrl(serviceLocation.getWebServiceUrl(), requestPairs, authentication.getAwsSecretKey(), protocol);
+            return HashUtils.createSignedUrl(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestPairs, authentication.getAwsSecretKey());
         }
-
-        private String createResponseGroupRequestValue() {
-            // add item attributes to response group if none was selected
-            if (responseGroup.size() == 0) {
-                responseGroup.add(ItemInformation.ATTRIBUTES);
-            }
-
-            // build the response group request value from the list
-            String responseGroupRequestValue = "";
-            for (int i = 0; i < responseGroup.size(); i++) {
-                if (i != 0) {
-                    responseGroupRequestValue += ",";
-                }
-                responseGroupRequestValue += responseGroup.get(i).getRequestValue();
-            }
-            return responseGroupRequestValue;
-        }
-
-        private String createSignedUrl(final String amazonServiceUrl, final Map<String, String> requestPairs, final String key, final String protocol) {
-            // The parameters need to be processed in lexicographical order, so we'll
-            // use a TreeMap implementation for that.
-            final SortedMap<String, String> sortedParamMap = new TreeMap<>(requestPairs);
-
-            // get the canonical form the query string
-            final String canonicalQS = canonicalizeParameters(sortedParamMap);
-
-            // create the string upon which the signature is calculated
-            final String toSign = "GET" + "\n"
-                    + amazonServiceUrl + "\n"
-                    + ROUTE + "\n"
-                    + canonicalQS;
-
-            // get the signature
-            final String hmac = hmac(toSign, key);
-            final String sig = percentEncodeRfc3986(hmac);
-
-            // construct the URL
-            return protocol + amazonServiceUrl + ROUTE + "?" + canonicalQS + "&Signature=" + sig;
-        }
-
-        private String hmac(final String stringToSign, final String awsSecretKey) {
-            String signature = null;
-            final byte[] data;
-            final byte[] rawHmac;
-            try {
-                data = stringToSign.getBytes(UTF8_CHARSET);
-                final Mac mac = Mac.getInstance(HMAC_SHA256_ALGORITHM);
-                final byte[] secretKeyBytes = awsSecretKey.getBytes(UTF8_CHARSET);
-                final SecretKeySpec secretKeySpec = new SecretKeySpec(secretKeyBytes, HMAC_SHA256_ALGORITHM);
-                mac.init(secretKeySpec);
-                rawHmac = mac.doFinal(data);
-                final Base64.Encoder encoder = Base64.getEncoder();
-                signature = new String(encoder.encode(rawHmac));
-            } catch (final UnsupportedEncodingException e) {
-                throw new RuntimeException(UTF8_CHARSET + " is not supported!", e);
-            } catch (NoSuchAlgorithmException | InvalidKeyException e) {
-                e.printStackTrace();
-            }
-            return signature;
-        }
-
-        private String canonicalizeParameters(final SortedMap<String, String> sortedParamMap) {
-            if (sortedParamMap.isEmpty()) {
-                return "";
-            }
-
-            final StringBuilder buffer = new StringBuilder();
-            final Iterator<Map.Entry<String, String>> paramIterator = sortedParamMap.entrySet().iterator();
-
-            while (paramIterator.hasNext()) {
-                final Map.Entry<String, String> keyValuePair = paramIterator.next();
-                buffer.append(percentEncodeRfc3986(keyValuePair.getKey()));
-                buffer.append("=");
-                buffer.append(percentEncodeRfc3986(keyValuePair.getValue()));
-                if (paramIterator.hasNext()) {
-                    buffer.append("&");
-                }
-            }
-            return buffer.toString();
-        }
-
-        private String percentEncodeRfc3986(final String s) {
-            String out;
-            try {
-                out = URLEncoder.encode(s, UTF8_CHARSET)
-                        .replace("+", "%20")
-                        .replace("*", "%2A")
-                        .replace("%7E", "~");
-            } catch (final UnsupportedEncodingException e) {
-                out = s;
-            }
-            return out;
-        }
-
     }
 
+    private static String createResponseGroupRequestValue(final List<ItemInformation> responseGroup) {
+        // add item attributes to response group if none was selected
+        if (responseGroup.size() == 0) {
+            responseGroup.add(ItemInformation.ATTRIBUTES);
+        }
 
+        String responseGroupRequestValue = "";
+        for (int i = 0; i < responseGroup.size(); i++) {
+            if (i != 0) {
+                responseGroupRequestValue += ",";
+            }
+            responseGroupRequestValue += responseGroup.get(i).getRequestValue();
+        }
+        return responseGroupRequestValue;
+    }
 }

@@ -10,6 +10,20 @@ import java.util.*;
  */
 public final class AmazonProductAdvertisingApiRequestBuilder {
 
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    private static final String DATE_FORMATTER_TIME_ZONE = "GMT";
+    private static final String SERVICE = "AWSECommerceService";
+    private static final String VERSION = "2011-08-01";
+
+    private static final String HTTP_PROTOCOL = "http://";
+    private static final String HTTPS_PROTOCOL = "https://";
+    private static final String ROUTE = "/onca/xml";
+
+    static {
+        DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(DATE_FORMATTER_TIME_ZONE));
+    }
+
+
     private AmazonProductAdvertisingApiRequestBuilder() {
         //no instance
     }
@@ -52,15 +66,6 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
      */
     public static final class AdvertisingApiItemSearchRequestBuilder {
 
-        private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        private static final String DATE_FORMATTER_TIME_ZONE = "GMT";
-
-        private static final String HTTP_PROTOCOL = "http://";
-        private static final String HTTPS_PROTOCOL = "https://";
-
-        private static final String ROUTE = "/onca/xml";
-        private static final String VERSION = "2011-08-01";
-        private static final String SERVICE = "AWSECommerceService";
         private static final String OPERATION = "ItemSearch";
 
         private final List<ItemInformation> responseGroup = new ArrayList<>();
@@ -70,10 +75,6 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
         private ItemCategory itemCategory = ItemCategory.ALL;
         private int maximumPrice = -1;
         private int minimumPrice = -1;
-
-        static {
-            DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(DATE_FORMATTER_TIME_ZONE));
-        }
 
 
         private AdvertisingApiItemSearchRequestBuilder(final String keywords) {
@@ -194,14 +195,6 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
      */
     public static final class AdvertisingApiItemLookupRequestBuilder {
 
-        private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        private static final String DATE_FORMATTER_TIME_ZONE = "GMT";
-
-        private static final String HTTP_PROTOCOL = "http://";
-        private static final String HTTPS_PROTOCOL = "https://";
-        private static final String ROUTE = "/onca/xml";
-        private static final String VERSION = "2011-08-01";
-        private static final String SERVICE = "AWSECommerceService";
         private static final String OPERATION = "ItemLookup";
 
         private final List<ItemInformation> responseGroup = new ArrayList<>();
@@ -209,9 +202,6 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
 
         private ItemCondition itemCondition = ItemCondition.ALL;
 
-        static {
-            DATE_FORMATTER.setTimeZone(TimeZone.getTimeZone(DATE_FORMATTER_TIME_ZONE));
-        }
 
         private AdvertisingApiItemLookupRequestBuilder(final ItemId itemId) {
             this.itemId = itemId;

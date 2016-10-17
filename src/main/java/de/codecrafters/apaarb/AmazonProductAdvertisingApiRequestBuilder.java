@@ -87,7 +87,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param itemCondition The {@link ItemInformation} to filter the result of the returned items.
          * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
          */
-        public AdvertisingApiItemSearchRequestBuilder withConditionFilter(final ItemCondition itemCondition) {
+        public AdvertisingApiItemSearchRequestBuilder filterByCondition(final ItemCondition itemCondition) {
             this.itemCondition = itemCondition;
             return this;
         }
@@ -98,7 +98,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param itemInformation The {@link ItemInformation} that shall be added to the response group.
          * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
          */
-        public AdvertisingApiItemSearchRequestBuilder withInfoAbout(final ItemInformation itemInformation) {
+        public AdvertisingApiItemSearchRequestBuilder includeInformationAbout(final ItemInformation itemInformation) {
             responseGroup.add(itemInformation);
             return this;
         }
@@ -109,7 +109,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param itemCategory The {@link ItemCategory} that will be searched.
          * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
          */
-        public AdvertisingApiItemSearchRequestBuilder withCategoryFilter(final ItemCategory itemCategory) {
+        public AdvertisingApiItemSearchRequestBuilder filterByCategroy(final ItemCategory itemCategory) {
             this.itemCategory = itemCategory;
             return this;
         }
@@ -121,7 +121,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param maximumPrice The maximum item price in the lowest currency denomination.
          * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
          */
-        public AdvertisingApiItemSearchRequestBuilder withMaximumPrice(final int maximumPrice) {
+        public AdvertisingApiItemSearchRequestBuilder filterByMaximumPrice(final int maximumPrice) {
             this.maximumPrice = maximumPrice;
             return this;
         }
@@ -133,7 +133,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param minimumPrice The minimum item price in the lowest currency denomination.
          * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
          */
-        public AdvertisingApiItemSearchRequestBuilder withMinimumPrice(final int minimumPrice) {
+        public AdvertisingApiItemSearchRequestBuilder filterByMinimumPrice(final int minimumPrice) {
             this.minimumPrice = minimumPrice;
             return this;
         }
@@ -145,10 +145,10 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
-                                       final AmazonWebServiceAuthentication authentication) {
+        public String createRequestUrlFor(final AmazonWebServiceLocation serviceLocation,
+                                          final AmazonWebServiceAuthentication authentication) {
 
-            return createRequestUrl(serviceLocation, authentication, HTTP_PROTOCOL);
+            return createRequestUrlFor(serviceLocation, authentication, HTTP_PROTOCOL);
         }
 
         /**
@@ -158,14 +158,14 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation,
-                                             final AmazonWebServiceAuthentication authentication) {
+        public String createSecureRequestUrlFor(final AmazonWebServiceLocation serviceLocation,
+                                                final AmazonWebServiceAuthentication authentication) {
 
-            return createRequestUrl(serviceLocation, authentication, HTTPS_PROTOCOL);
+            return createRequestUrlFor(serviceLocation, authentication, HTTPS_PROTOCOL);
         }
 
-        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
-                                        final AmazonWebServiceAuthentication authentication, final String protocol) {
+        private String createRequestUrlFor(final AmazonWebServiceLocation serviceLocation,
+                                           final AmazonWebServiceAuthentication authentication, final String protocol) {
 
             final Map<String, String> requestParams = new LinkedHashMap<>();
             requestParams.put("AWSAccessKeyId", authentication.getAwsAccessKey());
@@ -185,8 +185,8 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
                 requestParams.put("MinimumPrice", "" + minimumPrice);
             }
 
-            return RequestUrlUtils.createSignature(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestParams,
-                    authentication.getAwsSecretKey());
+            return RequestUrlUtils.createSignedRequestUrl(protocol, serviceLocation.getWebServiceUrl(), ROUTE,
+                    requestParams, authentication.getAwsSecretKey());
         }
     }
 
@@ -215,7 +215,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param itemInformation The {@link ItemInformation} that shall be added to the response group.
          * @return The current {@link AdvertisingApiItemLookupRequestBuilder}.
          */
-        public AdvertisingApiItemLookupRequestBuilder withInfoAbout(final ItemInformation itemInformation) {
+        public AdvertisingApiItemLookupRequestBuilder includeInformationAbout(final ItemInformation itemInformation) {
             responseGroup.add(itemInformation);
             return this;
         }
@@ -226,7 +226,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param itemCondition The {@link ItemInformation} to filter the result of the returned items.
          * @return The current {@link AdvertisingApiItemLookupRequestBuilder}.
          */
-        public AdvertisingApiItemLookupRequestBuilder withConditionFilter(final ItemCondition itemCondition) {
+        public AdvertisingApiItemLookupRequestBuilder filterByCondition(final ItemCondition itemCondition) {
             this.itemCondition = itemCondition;
             return this;
         }
@@ -238,10 +238,10 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
-                                       final AmazonWebServiceAuthentication authentication) {
+        public String createRequestUrlFor(final AmazonWebServiceLocation serviceLocation,
+                                          final AmazonWebServiceAuthentication authentication) {
 
-            return createRequestUrl(serviceLocation, authentication, HTTP_PROTOCOL);
+            return createRequestUrlFor(serviceLocation, authentication, HTTP_PROTOCOL);
         }
 
         /**
@@ -251,14 +251,14 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param authentication  The {@link AmazonWebServiceAuthentication} that shall be used.
          * @return The created signed request url.
          */
-        public String createSecureRequestUrl(final AmazonWebServiceLocation serviceLocation,
-                                             final AmazonWebServiceAuthentication authentication) {
+        public String createSecureRequestUrlFor(final AmazonWebServiceLocation serviceLocation,
+                                                final AmazonWebServiceAuthentication authentication) {
 
-            return createRequestUrl(serviceLocation, authentication, HTTPS_PROTOCOL);
+            return createRequestUrlFor(serviceLocation, authentication, HTTPS_PROTOCOL);
         }
 
-        private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
-                                        final AmazonWebServiceAuthentication authentication, final String protocol) {
+        private String createRequestUrlFor(final AmazonWebServiceLocation serviceLocation,
+                                           final AmazonWebServiceAuthentication authentication, final String protocol) {
 
             final Map<String, String> requestParams = new LinkedHashMap<>();
             requestParams.put("AWSAccessKeyId", authentication.getAwsAccessKey());
@@ -272,8 +272,8 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
             requestParams.put("Timestamp", DATE_FORMATTER.format(new Date()));
             requestParams.put("Version", VERSION);
 
-            return RequestUrlUtils.createSignature(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestParams,
-                    authentication.getAwsSecretKey());
+            return RequestUrlUtils.createSignedRequestUrl(protocol, serviceLocation.getWebServiceUrl(), ROUTE,
+                    requestParams, authentication.getAwsSecretKey());
         }
     }
 

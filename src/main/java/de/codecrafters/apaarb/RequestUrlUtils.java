@@ -23,8 +23,8 @@ final class RequestUrlUtils {
         //no instance
     }
 
-    static String createSignature(final String protocol, final String amazonServiceUrl, final String route,
-                                  final Map<String, String> requestParams, final String secretKey) {
+    static String createSignedRequestUrl(final String protocol, final String amazonServiceUrl, final String route,
+                                         final Map<String, String> requestParams, final String secretKey) {
 
         final String canonicalizeRequestParams = RequestUrlUtils.canonicalizeParameters(requestParams);
         final String signature = RequestUrlUtils.createSignature(amazonServiceUrl, route, canonicalizeRequestParams, secretKey);

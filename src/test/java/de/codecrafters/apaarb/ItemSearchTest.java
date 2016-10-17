@@ -3,6 +3,10 @@ package de.codecrafters.apaarb;
 import org.junit.Before;
 import org.junit.Test;
 
+import static de.codecrafters.apaarb.ItemCategory.HEALTH_AND_PERSONAL_CARE;
+import static de.codecrafters.apaarb.ItemCondition.USED;
+import static de.codecrafters.apaarb.ItemInformation.ATTRIBUTES;
+import static de.codecrafters.apaarb.ItemInformation.OFFERS;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
@@ -29,7 +33,7 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateRequestUrl() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes", "All");
     }
@@ -37,8 +41,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateRequestUrlWithConditionFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withConditionFilter(ItemCondition.USED)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCondition(USED)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "Used", "ItemAttributes", "All");
     }
@@ -46,8 +50,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateRequestUrlWithIndexFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withCategoryFilter(ItemCategory.HEALTH_AND_PERSONAL_CARE)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCategroy(HEALTH_AND_PERSONAL_CARE)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes", "HealthPersonalCare");
     }
@@ -55,9 +59,9 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.OFFERS)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes%2COffers", "All");
     }
@@ -65,8 +69,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateRequestUrlWithMinimumPriceFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withMinimumPrice(10000)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByMinimumPrice(10000)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes", "All");
         assertThat(requestUrl, containsString("MinimumPrice=10000"));
@@ -75,8 +79,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateRequestUrlWithMaximumPriceFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withMaximumPrice(10000)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByMaximumPrice(10000)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes", "All");
         assertThat(requestUrl, containsString("MaximumPrice=10000"));
@@ -85,7 +89,7 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateSecureRequestUrl() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "All");
     }
@@ -93,8 +97,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateSecureRequestUrlWithConditionFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withConditionFilter(ItemCondition.USED)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCondition(USED)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "Used", "ItemAttributes", "All");
     }
@@ -102,8 +106,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateSecureRequestUrlWithIndexFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withCategoryFilter(ItemCategory.HEALTH_AND_PERSONAL_CARE)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCategroy(HEALTH_AND_PERSONAL_CARE)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "HealthPersonalCare");
     }
@@ -111,9 +115,9 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateSecureRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.OFFERS)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes%2COffers", "All");
     }
@@ -121,8 +125,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateSecureRequestUrlWithMinimumPriceFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withMinimumPrice(10000)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByMinimumPrice(10000)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "All");
         assertThat(requestUrl, containsString("MinimumPrice=10000"));
@@ -131,8 +135,8 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateSecureRequestUrlWithMaximumPriceFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withMaximumPrice(10000)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByMaximumPrice(10000)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "All");
         assertThat(requestUrl, containsString("MaximumPrice=10000"));

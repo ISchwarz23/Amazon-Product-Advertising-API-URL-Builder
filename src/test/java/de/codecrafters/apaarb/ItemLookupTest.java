@@ -3,6 +3,9 @@ package de.codecrafters.apaarb;
 import org.junit.Before;
 import org.junit.Test;
 
+import static de.codecrafters.apaarb.ItemCondition.NEW;
+import static de.codecrafters.apaarb.ItemInformation.ATTRIBUTES;
+import static de.codecrafters.apaarb.ItemInformation.OFFERS;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
@@ -29,7 +32,7 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateRequestUrl() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes");
     }
@@ -37,8 +40,8 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateRequestUrlWithConditionFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .withConditionFilter(ItemCondition.NEW)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCondition(NEW)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "New", "ItemAttributes");
     }
@@ -46,9 +49,9 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.OFFERS)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes%2COffers");
     }
@@ -56,10 +59,10 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateRequestUrlWithConditionFilterAndSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .withConditionFilter(ItemCondition.NEW)
-                .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.OFFERS)
-                .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCondition(NEW)
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "New", "ItemAttributes%2COffers");
     }
@@ -67,7 +70,7 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateSecureRequestUrl() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes");
     }
@@ -75,8 +78,8 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateSecureRequestUrlWithConditionFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .withConditionFilter(ItemCondition.NEW)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCondition(NEW)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "New", "ItemAttributes");
     }
@@ -84,9 +87,9 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateSecureRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.OFFERS)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes%2COffers");
     }
@@ -94,10 +97,10 @@ public class ItemLookupTest {
     @Test
     public void shouldCreateSecureRequestUrlWithConditionFilterAndSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .withConditionFilter(ItemCondition.NEW)
-                .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.OFFERS)
-                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+                .filterByCondition(NEW)
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "https", "amazon.de", "New", "ItemAttributes%2COffers");
     }

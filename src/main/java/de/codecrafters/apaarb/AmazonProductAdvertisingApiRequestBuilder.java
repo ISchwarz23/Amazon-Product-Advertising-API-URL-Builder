@@ -68,7 +68,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
 
         private static final String OPERATION = "ItemSearch";
 
-        private final List<ItemInformation> responseGroup = new ArrayList<>();
+        private final List<ItemInformation> responseGroup = new ArrayList<ItemInformation>();
         private final String keywords;
 
         private ItemCondition itemCondition = ItemCondition.ALL;
@@ -167,24 +167,26 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
         private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
                                         final AmazonWebServiceAuthentication authentication, final String protocol) {
 
-            final Map<String, String> requestPairs = new LinkedHashMap<>();
-            requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
-            requestPairs.put("AssociateTag", authentication.getAssociateTag());
-            requestPairs.put("Condition", itemCondition.getRequestValue());
-            requestPairs.put("Keywords", keywords);
-            requestPairs.put("Operation", OPERATION);
-            requestPairs.put("ResponseGroup", createResponseGroupRequestValue(responseGroup));
-            requestPairs.put("SearchIndex", itemCategory.getRequestValue());
-            requestPairs.put("Service", SERVICE);
-            requestPairs.put("Timestamp", DATE_FORMATTER.format(new Date()));
-            requestPairs.put("Version", VERSION);
+            final Map<String, String> requestParams = new LinkedHashMap<String, String>();
+            requestParams.put("AWSAccessKeyId", authentication.getAwsAccessKey());
+            requestParams.put("AssociateTag", authentication.getAssociateTag());
+            requestParams.put("Condition", itemCondition.getRequestValue());
+            requestParams.put("Keywords", keywords);
+            requestParams.put("Operation", OPERATION);
+            requestParams.put("ResponseGroup", createResponseGroupRequestValue(responseGroup));
+            requestParams.put("SearchIndex", itemCategory.getRequestValue());
+            requestParams.put("Service", SERVICE);
+            requestParams.put("Timestamp", DATE_FORMATTER.format(new Date()));
+            requestParams.put("Version", VERSION);
             if (maximumPrice != -1) {
-                requestPairs.put("MaximumPrice", "" + maximumPrice);
+                requestParams.put("MaximumPrice", "" + maximumPrice);
             }
             if (minimumPrice != -1) {
-                requestPairs.put("MinimumPrice", "" + minimumPrice);
+                requestParams.put("MinimumPrice", "" + minimumPrice);
             }
-            return HashUtils.createSignedUrl(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestPairs, authentication.getAwsSecretKey());
+
+            return RequestUrlUtils.createSignature(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestParams,
+                    authentication.getAwsSecretKey());
         }
     }
 
@@ -197,7 +199,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
 
         private static final String OPERATION = "ItemLookup";
 
-        private final List<ItemInformation> responseGroup = new ArrayList<>();
+        private final List<ItemInformation> responseGroup = new ArrayList<ItemInformation>();
         private final ItemId itemId;
 
         private ItemCondition itemCondition = ItemCondition.ALL;
@@ -258,18 +260,20 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
         private String createRequestUrl(final AmazonWebServiceLocation serviceLocation,
                                         final AmazonWebServiceAuthentication authentication, final String protocol) {
 
-            final Map<String, String> requestPairs = new LinkedHashMap<>();
-            requestPairs.put("AWSAccessKeyId", authentication.getAwsAccessKey());
-            requestPairs.put("AssociateTag", authentication.getAssociateTag());
-            requestPairs.put("Condition", itemCondition.getRequestValue());
-            requestPairs.put("IdType", itemId.getType().getRequestValue());
-            requestPairs.put("ItemId", itemId.getValue());
-            requestPairs.put("Operation", OPERATION);
-            requestPairs.put("ResponseGroup", createResponseGroupRequestValue(responseGroup));
-            requestPairs.put("Service", SERVICE);
-            requestPairs.put("Timestamp", DATE_FORMATTER.format(new Date()));
-            requestPairs.put("Version", VERSION);
-            return HashUtils.createSignedUrl(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestPairs, authentication.getAwsSecretKey());
+            final Map<String, String> requestParams = new LinkedHashMap<String, String>();
+            requestParams.put("AWSAccessKeyId", authentication.getAwsAccessKey());
+            requestParams.put("AssociateTag", authentication.getAssociateTag());
+            requestParams.put("Condition", itemCondition.getRequestValue());
+            requestParams.put("IdType", itemId.getType().getRequestValue());
+            requestParams.put("ItemId", itemId.getValue());
+            requestParams.put("Operation", OPERATION);
+            requestParams.put("ResponseGroup", createResponseGroupRequestValue(responseGroup));
+            requestParams.put("Service", SERVICE);
+            requestParams.put("Timestamp", DATE_FORMATTER.format(new Date()));
+            requestParams.put("Version", VERSION);
+
+            return RequestUrlUtils.createSignature(protocol, serviceLocation.getWebServiceUrl(), ROUTE, requestParams,
+                    authentication.getAwsSecretKey());
         }
     }
 

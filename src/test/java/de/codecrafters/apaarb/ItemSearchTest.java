@@ -8,7 +8,7 @@ import static org.hamcrest.CoreMatchers.startsWith;
 import static org.junit.Assert.assertThat;
 
 /**
- * Usage example of the ItemSearch request url builder using the {@link AmazonProductAdvertisingApiRequestBuilder}.
+ * Test and usage example of the ItemSearch request url builder using the {@link AmazonProductAdvertisingApiRequestBuilder}.
  *
  * @author ISchwarz
  */
@@ -46,20 +46,20 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateRequestUrlWithIndexFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withCategoryFilter(ItemCategory.DVD)
+                .withCategoryFilter(ItemCategory.HEALTH_AND_PERSONAL_CARE)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes", "DVD");
+        checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes", "HealthPersonalCare");
     }
 
     @Test
-    public void shouldCreateRequestUrlWithInformationAboutImages() throws Exception {
+    public void shouldCreateRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.IMAGES)
+                .withInfoAbout(ItemInformation.OFFERS)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes%2CImages", "All");
+        checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes%2COffers", "All");
     }
 
     @Test
@@ -102,20 +102,20 @@ public class ItemSearchTest {
     @Test
     public void shouldCreateSecureRequestUrlWithIndexFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
-                .withCategoryFilter(ItemCategory.DVD)
+                .withCategoryFilter(ItemCategory.HEALTH_AND_PERSONAL_CARE)
                 .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "DVD");
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "HealthPersonalCare");
     }
 
     @Test
-    public void shouldCreateSecureRequestUrlWithInformationAboutImages() throws Exception {
+    public void shouldCreateSecureRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.IMAGES)
+                .withInfoAbout(ItemInformation.OFFERS)
                 .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes%2CImages", "All");
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes%2COffers", "All");
     }
 
     @Test
@@ -137,7 +137,6 @@ public class ItemSearchTest {
         checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "All");
         assertThat(requestUrl, containsString("MaximumPrice=10000"));
     }
-
 
     private static void checkRequestUrl(final String requestUrl, final String protocol, final String domain,
                                         final String condition, final String responseGroup, final String searchIndex) {

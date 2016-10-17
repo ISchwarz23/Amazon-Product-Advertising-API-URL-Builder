@@ -3,10 +3,12 @@ package de.codecrafters.apaarb;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.startsWith;
+import static org.junit.Assert.assertThat;
 
 /**
- * Usage example of the ItemLookup request url builder using the {@link AmazonProductAdvertisingApiRequestBuilder}.
+ * Test and usage example of the ItemLookup request url builder using the {@link AmazonProductAdvertisingApiRequestBuilder}.
  *
  * @author ISchwarz
  */
@@ -25,90 +27,96 @@ public class ItemLookupTest {
     }
 
     @Test
-    public void testRequestUrlCreation() throws Exception {
+    public void shouldCreateRequestUrl() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes");
     }
 
     @Test
-    public void testRequestUrlCreationWithConditionFilter() throws Exception {
+    public void shouldCreateRequestUrlWithConditionFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .withConditionFilter(ItemCondition.NEW)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "http", "amazon.de", "New", "ItemAttributes");
     }
 
     @Test
-    public void testRequestUrlCreationWithSpecialInformation() throws Exception {
+    public void shouldCreateRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes%2COffers");
     }
 
     @Test
-    public void testRequestUrlCreationWithConditionFilterAndSpecialInformation() throws Exception {
+    public void shouldCreateRequestUrlWithConditionFilterAndSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .withConditionFilter(ItemCondition.NEW)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "http", "amazon.de", "New", "ItemAttributes%2COffers");
     }
 
     @Test
-    public void testSecureRequestUrlCreation() throws Exception {
+    public void shouldCreateSecureRequestUrl() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes");
     }
 
     @Test
-    public void testSecureRequestUrlCreationWithConditionFilter() throws Exception {
+    public void shouldCreateSecureRequestUrlWithConditionFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .withConditionFilter(ItemCondition.NEW)
                 .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "https", "amazon.de", "New", "ItemAttributes");
     }
 
     @Test
-    public void testSecureRequestUrlCreationWithSpecialInformation() throws Exception {
+    public void shouldCreateSecureRequestUrlWithSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
                 .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes%2COffers");
     }
 
     @Test
-    public void testSecureRequestUrlCreationWithConditionFilterAndSpecialInformation() throws Exception {
+    public void shouldCreateSecureRequestUrlWithConditionFilterAndSpecificInformation() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
                 .withConditionFilter(ItemCondition.NEW)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
-                .withInfoAbout(ItemInformation.IMAGES)
                 .withInfoAbout(ItemInformation.OFFERS)
-                .createSecureRequestUrl(AmazonWebServiceLocation.COM, authentication);
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
-        System.out.println(requestUrl);
-        assertNotNull(requestUrl);
+        checkRequestUrl(requestUrl, "https", "amazon.de", "New", "ItemAttributes%2COffers");
+    }
+
+    private static void checkRequestUrl(final String requestUrl, final String protocol, final String domain,
+                                        final String condition, final String responseGroup) {
+
+        assertThat(requestUrl, startsWith(protocol + "://"));
+        assertThat(requestUrl, containsString(domain));
+        assertThat(requestUrl, containsString("AWSAccessKeyId=" + AWS_ACCESS_KEY));
+        assertThat(requestUrl, containsString("AssociateTag=" + ASSOCIATE_TAG));
+        assertThat(requestUrl, containsString("Condition=" + condition));
+        assertThat(requestUrl, containsString("ItemId=" + ITEM_ID.getValue()));
+        assertThat(requestUrl, containsString("IdType=" + ITEM_ID.getType()));
+        assertThat(requestUrl, containsString("Operation=ItemLookup"));
+        assertThat(requestUrl, containsString("ResponseGroup=" + responseGroup));
+        assertThat(requestUrl, containsString("Service=AWSECommerceService"));
+        assertThat(requestUrl, containsString("Timestamp="));
+        assertThat(requestUrl, containsString("Version=2011-08-01"));
+        assertThat(requestUrl, containsString("Signature="));
     }
 }

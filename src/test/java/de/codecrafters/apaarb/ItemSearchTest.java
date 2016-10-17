@@ -27,7 +27,7 @@ public class ItemSearchTest {
     }
 
     @Test
-    public void testRequestUrlCreation() throws Exception {
+    public void shouldCreateRequestUrl() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
@@ -35,7 +35,7 @@ public class ItemSearchTest {
     }
 
     @Test
-    public void testRequestUrlCreationWithConditionFilter() throws Exception {
+    public void shouldCreateRequestUrlWithConditionFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .withConditionFilter(ItemCondition.USED)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
@@ -44,7 +44,7 @@ public class ItemSearchTest {
     }
 
     @Test
-    public void testRequestUrlCreationWithIndexFilter() throws Exception {
+    public void shouldCreateRequestUrlWithIndexFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .withCategoryFilter(ItemCategory.DVD)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
@@ -53,7 +53,7 @@ public class ItemSearchTest {
     }
 
     @Test
-    public void testRequestUrlCreationWithInformationAboutAttributes() throws Exception {
+    public void shouldCreateRequestUrlWithInformationAboutImages() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .withInfoAbout(ItemInformation.ATTRIBUTES)
                 .withInfoAbout(ItemInformation.IMAGES)
@@ -63,7 +63,7 @@ public class ItemSearchTest {
     }
 
     @Test
-    public void testRequestUrlCreationWithMinimumPriceFilter() throws Exception {
+    public void shouldCreateRequestUrlWithMinimumPriceFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .withMinimumPrice(10000)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
@@ -73,12 +73,68 @@ public class ItemSearchTest {
     }
 
     @Test
-    public void testRequestUrlCreationWithMaximumPriceFilter() throws Exception {
+    public void shouldCreateRequestUrlWithMaximumPriceFilter() throws Exception {
         final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
                 .withMaximumPrice(10000)
                 .createRequestUrl(AmazonWebServiceLocation.DE, authentication);
 
         checkRequestUrl(requestUrl, "http", "amazon.de", "All", "ItemAttributes", "All");
+        assertThat(requestUrl, containsString("MaximumPrice=10000"));
+    }
+
+    @Test
+    public void shouldCreateSecureRequestUrl() throws Exception {
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "All");
+    }
+
+    @Test
+    public void shouldCreateSecureRequestUrlWithConditionFilter() throws Exception {
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
+                .withConditionFilter(ItemCondition.USED)
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+
+        checkRequestUrl(requestUrl, "https", "amazon.de", "Used", "ItemAttributes", "All");
+    }
+
+    @Test
+    public void shouldCreateSecureRequestUrlWithIndexFilter() throws Exception {
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
+                .withCategoryFilter(ItemCategory.DVD)
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "DVD");
+    }
+
+    @Test
+    public void shouldCreateSecureRequestUrlWithInformationAboutImages() throws Exception {
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
+                .withInfoAbout(ItemInformation.ATTRIBUTES)
+                .withInfoAbout(ItemInformation.IMAGES)
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes%2CImages", "All");
+    }
+
+    @Test
+    public void shouldCreateSecureRequestUrlWithMinimumPriceFilter() throws Exception {
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
+                .withMinimumPrice(10000)
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "All");
+        assertThat(requestUrl, containsString("MinimumPrice=10000"));
+    }
+
+    @Test
+    public void shouldCreateSecureRequestUrlWithMaximumPriceFilter() throws Exception {
+        final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch(KEYWORDS)
+                .withMaximumPrice(10000)
+                .createSecureRequestUrl(AmazonWebServiceLocation.DE, authentication);
+
+        checkRequestUrl(requestUrl, "https", "amazon.de", "All", "ItemAttributes", "All");
         assertThat(requestUrl, containsString("MaximumPrice=10000"));
     }
 

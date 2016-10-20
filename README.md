@@ -1,4 +1,7 @@
-# Amazon-Product-Advertising-API-URL-Builder
+[![Build Status](https://travis-ci.org/ISchwarz23/Amazon-Product-Advertising-API-URL-Builder.svg?branch=master)](https://travis-ci.org/ISchwarz23/Amazon-Product-Advertising-API-URL-Builder)
+# The Amazon-Product-Advertising-API URL Builder
+Simple builder in plain Java to create requests to the Amazon Product Advertising API.
+![APAA-Logo](http://associates-amazon.s3.amazonaws.com/scratchpad/images/logo.gif)
 Amazon challenges all developers that want to use their Advertising API. Especially the creation of the request URL is 
 pretty complex. Therefor I've created this URL Builder, which allows you to create the request URL without having to read 
 the Product Advertisement API documentation or study the used hashing algorithms.

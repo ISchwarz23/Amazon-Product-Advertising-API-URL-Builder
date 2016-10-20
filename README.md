@@ -40,6 +40,7 @@ contains all available service locations.
 AmazonWebServiceLocation.COM
 // Germanc
 AmazonWebServiceLocation.DE
+// ...
 ```
 
 ## Item Lookup
@@ -74,4 +75,14 @@ final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLooku
 ```
 
 ### Filter the Result
-
+If you want to specify the result set, there is the possibility to do so by filtering the results by the condition of
+the products. All available conditions are listed inside the `ItemCondition` enumeration. An example usage is shown below.
+```java
+// static import was used for ItemInformation and ItemCondition
+final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .includeInformationAbout(IMAGES)
+                .filterByCondition(NEW)
+                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
+```

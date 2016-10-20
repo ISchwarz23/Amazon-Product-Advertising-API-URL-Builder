@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/ISchwarz23/Amazon-Product-Advertising-API-URL-Builder.svg?branch=master)](https://travis-ci.org/ISchwarz23/Amazon-Product-Advertising-API-URL-Builder)
 # The Amazon-Product-Advertising-API URL Builder
-Simple builder in plain Java to create requests to the Amazon Product Advertising API.
-![APAA-Logo](http://associates-amazon.s3.amazonaws.com/scratchpad/images/logo.gif)
+Simple builder in plain Java to create requests to the Amazon Product Advertising API.  
+![APAA-Logo](http://associates-amazon.s3.amazonaws.com/scratchpad/images/logo.gif)  
 Amazon challenges all developers that want to use their Advertising API. Especially the creation of the request URL is 
 pretty complex. Therefor I've created this URL Builder, which allows you to create the request URL without having to read 
 the Product Advertisement API documentation or study the used hashing algorithms.
@@ -17,8 +17,8 @@ dependencies {
     ...
 }
 ```
-This library is written in plain java and does not depend on any other library.
-
+This library is written in plain java and does not depend on any other library.  
+  
 ## Item Identification
 There are multiple types of ID representations handled by Amazon. Namely they are ASIN, ISBN, UPX and EAN. So especially 
 if you want to look up a specific item you have to give its ID.  
@@ -57,8 +57,8 @@ AmazonWebServiceLocation.COM
 // Germany
 AmazonWebServiceLocation.DE
 // ...
-```
-
+```  
+  
 ## Item Lookup
 ### Basic Request
 If you want to lookup specific item information from Amazon you can do so by creating an Request using the 
@@ -101,8 +101,8 @@ final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLooku
                 .includeInformationAbout(IMAGES)
                 .filterByCondition(NEW)
                 .createRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
-```
-
+```  
+  
 ## Item Search
 ### Basic Request
 To do a basic item search request by keywords to Amazon you can do so by creating an Request using the 

@@ -38,7 +38,7 @@ contains all available service locations.
 ```java
 // America
 AmazonWebServiceLocation.COM
-// Germanc
+// Germany
 AmazonWebServiceLocation.DE
 // ...
 ```
@@ -51,14 +51,14 @@ of the item to search for. To create the request url you have to give the `Amazo
 be requested and the `AmazonWebServiceAuthentication` that shall be used.
 ```java
 final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
+                .createRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
 ```
 The result is a request URL as String, that can be used to do the request with your favourite http request library. The
 result of the `createRequestUrlFor()` method will create a http link. If you prefer the https protocol in your url, simply
 call the `createSecureRequestUrlFor()`.
 ```java
 final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
-                .createSecureRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
 ```
 
 ### Specify the included Item Information
@@ -71,7 +71,7 @@ final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLooku
                 .includeInformationAbout(ATTRIBUTES)
                 .includeInformationAbout(OFFERS)
                 .includeInformationAbout(IMAGES)
-                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
+                .createRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
 ```
 
 ### Filter the Result
@@ -84,5 +84,55 @@ final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLooku
                 .includeInformationAbout(OFFERS)
                 .includeInformationAbout(IMAGES)
                 .filterByCondition(NEW)
-                .createRequestUrlFor(AmazonWebServiceLocation.DE, authentication);
+                .createRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
+```
+
+## Item Search
+### Basic Request
+To do a basic item search request by keywords to Amazon you can do so by creating an Request using the 
+`AmazonProductAdvertisingApiRequestBuilder`. You create a request builder for an item lookup by giving the keywords that
+shall be searched for as string (spaces are allowed). To create the request url you have to give the again the
+`AmazonWebServiceLocation` that shall be requested and the `AmazonWebServiceAuthentication` that shall be used.
+```java
+final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch("Deadpool Movie")
+                .createRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
+```
+The result is a request URL as String, that can be used to do the request with your favourite http request library. The
+result of the `createRequestUrlFor()` method will create a http link. If you prefer the https protocol in your url, simply
+call the `createSecureRequestUrlFor()`.
+```java
+final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
+                .createSecureRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
+```
+
+### Specify the included Item Information
+You also have the possibility to specify which item information will be returned by the amazon service when calling
+the request URL. This can be done using the `ItemInformation` enumeration, which lists all available item information
+categories. If you don't pass anything the request builder will add information about the item attributes to the request.
+```java
+// static import was used for ItemInformation
+final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemSearch("Deadpool Movie")
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .includeInformationAbout(IMAGES)
+                .createRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
+```
+
+### Filter the Result
+If you want to specify the result set, there is the possibility to do so by filtering the results by the condition, the 
+category, the minimum, as well as the maximum price of the items/products. All available conditions are listed inside 
+the `ItemCondition` enumeration. The available categories are inside the enumeration called `ItemCategory`. To filter by
+minimum and maximum price you have to give an integer representing the price in the smallest currency unit of the given
+location. An example usage is shown below. This filters can be used separately as well as in combination.
+```java
+// static import was used for ItemInformation and ItemCondition
+final String requestUrl = AmazonProductAdvertisingApiRequestBuilder.forItemLookup(ITEM_ID)
+                .includeInformationAbout(ATTRIBUTES)
+                .includeInformationAbout(OFFERS)
+                .includeInformationAbout(IMAGES)
+                .filterByCondition(NEW)
+                .filterByCategroy(DVD)
+                .filterByMinimumPrice(10000)
+                .filterByMaximumPrice(30000)
+                .createRequestUrlFor(AmazonWebServiceLocation.COM, authentication);
 ```

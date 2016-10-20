@@ -6,6 +6,19 @@ Amazon challenges all developers that want to use their Advertising API. Especia
 pretty complex. Therefor I've created this URL Builder, which allows you to create the request URL without having to read 
 the Product Advertisement API documentation or study the used hashing algorithms.
 
+#### Setup
+To use this library in your Java or Android project you can download it from jCenter (GroupId: de.codecrafters.apaarb, 
+ArtifactId: apaarb) in the latest version. If you use gradle add `jCenter()` to your repositories (if not done yet) and
+specify the dependency.
+```
+dependencies {
+    ...
+    compile 'de.codecrafters.apaarb:apaarb:0.9.1'
+    ...
+}
+```
+This library is written in plain java and does not depend on any other library.
+
 ## Item Identification
 There are multiple types of ID representations handled by Amazon. Namely they are ASIN, ISBN, UPX and EAN. So especially 
 if you want to look up a specific item you have to give its ID.  

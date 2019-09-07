@@ -109,11 +109,12 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
          * @param itemCategory The {@link ItemCategory} that will be searched.
          * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
          */
-        public AdvertisingApiItemSearchRequestBuilder filterByCategroy(final ItemCategory itemCategory) {
+        public AdvertisingApiItemSearchRequestBuilder filterByCategory(final ItemCategory itemCategory) {
             this.itemCategory = itemCategory;
             return this;
         }
 
+        
         /**
          * Specifies the maximum item price in the response. Prices appear in the lowest currency denomination.
          * For example, 3241 is $32.41.
@@ -201,7 +202,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
 
         private final List<ItemInformation> responseGroup = new ArrayList<>();
         private final ItemId itemId;
-
+        private ItemCategory itemCategory = ItemCategory.ALL;
         private ItemCondition itemCondition = ItemCondition.ALL;
 
 
@@ -219,6 +220,19 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
             responseGroup.add(itemInformation);
             return this;
         }
+        
+        /**
+         * Specifies the {@link ItemCategory} that will be searched.
+         *
+         * @param itemCategory The {@link ItemCategory} that will be searched.
+         * @return The current {@link AdvertisingApiItemSearchRequestBuilder}.
+         */
+        public AdvertisingApiItemLookupRequestBuilder filterByCategory(final ItemCategory itemCategory) {
+            this.itemCategory = itemCategory;
+            return this;
+        }
+        
+        
 
         /**
          * Sets the {@link ItemCondition} to filter the result of the returned items.
@@ -266,6 +280,7 @@ public final class AmazonProductAdvertisingApiRequestBuilder {
             requestParams.put("Condition", itemCondition.getRequestValue());
             requestParams.put("IdType", itemId.getType().getRequestValue());
             requestParams.put("ItemId", itemId.getValue());
+            requestParams.put("SearchIndex", itemCategory.getRequestValue());
             requestParams.put("Operation", OPERATION);
             requestParams.put("ResponseGroup", createResponseGroupRequestValue(responseGroup));
             requestParams.put("Service", SERVICE);
